@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id         Int       @id @default(autoincrement())
+  nombre     String
+  email      String    @unique
+  password   String
+  role       String    @default("CLIENT")
+  mfaSecret  String?
+  mfaEnabled Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+  reservas   Reserva[]
+}
+
+model Vuelo {
+  id                 Int       @id @default(autoincrement())
+  origen             String
+  destino            String
+  fechaSalida        DateTime
+  precio             Float
+  asientosDisponibles Int
+  createdAt          DateTime  @default(now())
+  reservas           Reserva[]
+}
+
+model Reserva {
+  id         Int      @id @default(autoincrement())
+  usuarioId  Int
+  vueloId    Int
+  total      Float
+  estado     String   @default("PENDIENTE") // PENDIENTE | PAGADA | CANCELADA | EXPIRADA
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  usuario    Usuario  @relation(fields: [usuarioId], references: [id])
+  vuelo      Vuelo    @relation(fields: [vueloId], references: [id])
+  pago       Pago?
+}
+
+model Pago {
+  id        Int      @id @default(autoincrement())
+  reservaId Int      @unique
+  folio     String   @unique
+  monto     Float
+  estado    String   @default("COMPLETADO")
+  createdAt DateTime @default(now())
+  reserva   Reserva  @relation(fields: [reservaId], references: [id])
+}
+
+// FIX: Anti-replay — registra nonces de requests críticos para evitar
+// que un request de pago o cancelación capturado pueda reenviarse.
+// TTL de 24h evita que la tabla crezca indefinidamente.
+model UsedNonce {
+  id        Int      @id @default(autoincrement())
+  nonce     String   @unique
+  action    String   // "pagar" | "cancelar"
+  userId    Int
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
