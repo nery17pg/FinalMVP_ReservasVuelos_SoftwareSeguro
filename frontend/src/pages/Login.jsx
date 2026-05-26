@@ -20,8 +20,6 @@ export default function Login() {
     const handler = (e) => setCaptchaToken(e.detail);
     window.addEventListener('captcha-success', handler);
 
-    // Si el script de hCaptcha ya cargó antes que React montara el componente,
-    // hay que forzar el render manual del widget
     const renderWidget = () => {
       if (window.hcaptcha) {
         const el = document.querySelector('.h-captcha');
@@ -100,7 +98,7 @@ export default function Login() {
     return (
       <div className="auth-container">
         <div className="auth-card">
-          <h2>🔐 Verificación MFA</h2>
+          <h2>Verificación MFA</h2>
           <p style={{ color: 'var(--text-muted, #666)', marginBottom: '1rem', fontSize: '0.95rem' }}>
             Abre tu aplicación autenticadora (Google Authenticator, Authy, etc.)
             e ingresa el código de 6 dígitos.

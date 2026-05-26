@@ -85,7 +85,7 @@ export default function MfaConfig() {
   return (
     <div style={{ padding: '1rem' }}>
       <div style={card}>
-        <h2 style={{ marginBottom: '0.5rem' }}>🔐 Autenticación de dos factores (MFA)</h2>
+        <h2 style={{ marginBottom: '0.5rem' }}>Autenticación de dos factores (MFA)</h2>
 
         <p style={{ marginBottom: '1rem' }}>
           Estado: <span style={badge(mfaEnabled)}>{mfaEnabled ? '✅ Activo' : '❌ Inactivo'}</span>
