@@ -1,4 +1,4 @@
-# ✈ VuelosApp — Sistema de Reservación de Vuelos Seguro
+# VuelosApp — Sistema de Reservación de Vuelos Seguro
 
 Proyecto académico completo: React + Node.js + Express + PostgreSQL + Prisma  
 Enfoque: OWASP Top 10 + STRIDE + SecDevOps
